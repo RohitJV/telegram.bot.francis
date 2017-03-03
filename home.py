@@ -3,27 +3,27 @@ import time
 import telepot
 import json
 import random
-from urllib.request import urlopen
+import urllib
 from pprint import pprint
 
 from FComics import getXkcdImageUrl
 from FComics import getCnhImageUrl
 
-bot = telepot.Bot('188601774:AAEGoDL5WxPSStQp_XJrtmWp-UugvSPgMZ8');
+bot = telepot.Bot('335510254:AAEd_Rkt7uARSPwHRrroVcr-uMeDAg0hFC4');
 
 def comic(msg):
 	content_type, chat_type, chat_id = telepot.glance(msg);
 	txtMsg = msg["text"];
 	if("xkcd" in txtMsg):
 		try:
-			f = urlopen('https:'+getXkcdImageUrl());
+			f = urllib.urlopen('https:'+getXkcdImageUrl());
 			show_keyboard = {'keyboard': [['More xkcd comics!'],["Cyanide and Happiness!"]], "one_time_keyboard": True};
 			bot.sendPhoto(chat_id, ('xkcd.jpg', f), reply_markup=show_keyboard);
 		except:
 			bot.sendMessage(chat_id, "Error in retriving comic");
 	elif(("cnh" in txtMsg) or ("Cyanide" in txtMsg)):
 		try:			
-			f = urlopen('https:'+getCnhImageUrl());
+			f = urllib.urlopen('https:'+getCnhImageUrl());
 			show_keyboard = {'keyboard': [["More Cyanide and Happiness!"],["xkcd comics!"]], "one_time_keyboard": True};
 			bot.sendPhoto(chat_id, ('cnh.jpg', f), reply_markup=show_keyboard);
 		except:
@@ -53,7 +53,7 @@ def main():
 	while 1:
 	    time.sleep(10)
 
-bot.notifyOnMessage(handle_message);
+bot.message_loop(handle_message);
 
 if __name__ == "__main__":
 	main()
